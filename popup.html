@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    #spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .success-check {
+      width: 48px;
+      height: 48px;
+
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+
+      animation:
+        draw-check 0.6s ease forwards,
+        pop 0.3s ease 0.6s;
+    }
+
+    @keyframes draw-check {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f4f7f2;
+      width: 360px;
+      min-height: 320px;
+      overflow: hidden;
+    }
+
+    .popup {
+      background: #ffffff;
+      width: 360px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 14px;
+      background: #fff;
+      border-bottom: 1px solid #edf0eb;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #e8f5e1;
+      border: 1.5px solid #c3e0b0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      color: #2d7a3a;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1d5c27;
+      letter-spacing: -0.3px;
+    }
+
+    .header-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid #d4e8cc;
+      background: #f0f8ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .header-avatar:hover {
+      background: #e0f0d8;
+    }
+
+    .header-avatar svg {
+      color: #5a8c5e;
+    }
+
+    /* Main content */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 24px 24px;
+      gap: 0;
+    }
+
+    /* Success icon */
+    .success-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #e8f5e1;
+      border: 2px solid #c3e0b0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 18px;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .success-ring::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px dashed #c3e0b0;
+      opacity: 0.6;
+      animation: spin 12s linear infinite;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .success-check {
+      width: 28px;
+      height: 28px;
+      color: #2d7a3a;
+    }
+
+    /* Text */
+    .headline {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a4d22;
+      text-align: center;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
+    }
+
+    .subline {
+      font-size: 13px;
+      color: #7aaa7e;
+      text-align: center;
+      font-weight: 400;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* URL card */
+    .url-card {
+      width: 100%;
+      background: #f7fbf5;
+      border: 1.5px solid #daefd2;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .url-link-icon {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 8px;
+      background: #e8f5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .url-link-icon svg {
+      color: #3a8c42;
+    }
+
+    .url-text {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1d5c27;
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-copy {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #b8ddb0;
+      background: #fff;
+      color: #2d7a3a;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-copy:hover {
+      background: #f0f8ec;
+      border-color: #8ec98a;
+    }
+
+    .btn-copy.copied {
+      background: #2d7a3a;
+      color: #fff;
+      border-color: #2d7a3a;
+    }
+
+    .btn-copy svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .btn-qr {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 8px;
+      background: #2d7a3a;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-qr:hover {
+      background: #245f2e;
+    }
+
+    .btn-qr svg {
+      color: #fff;
+    }
+
+    /* Footer action */
+    .btn-new {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: 50px;
+      border: 1.5px solid #c3e0b0;
+      background: transparent;
+      color: #2d7a3a;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 4px;
+    }
+
+    .btn-new:hover {
+      background: #f0f8ec;
+      border-color: #8ec98a;
+    }
+
+    .btn-new svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Copied toast */
+    .toast {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #1a4d22;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 50px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="popup">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+        </div>
+        <span class="logo-text">urly</span>
+      </div>
+      <button class="header-avatar" title="Perfil">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="content">
+
+
+      <div class="success-ring" id="ring">
+        <svg class="success-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+
+
+
+      <h1 class="headline" id="headline">Sua URL foi encurtada!</h1>
+      <p class="subline" id="subline">Já está na sua área de transferência<br>e pronta para compartilhar.</p>
+
+      <div class="url-card">
+        <div class="url-link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+        </div>
+        <span class="url-text" id="shorten-url-span">urly.io/2ds43</span>
+        <button class="btn-copy" id="copyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          Copiar
+        </button>
+        <button class="btn-qr" title="QR Code" id="qrBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="3" height="3" />
+            <rect x="18" y="14" width="3" height="3" />
+            <rect x="14" y="18" width="3" height="3" />
+            <rect x="18" y="18" width="3" height="3" />
+          </svg>
+        </button>
+      </div>
+
+    
+  </div>
+  <script src="main.js"></script>
+
+</body>
+
+</html>
